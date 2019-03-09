@@ -1,4 +1,4 @@
-Sub Stocks():
+Sub Stocks2():
 
     Dim tckrTypeCount As Integer
     Dim stockVol As Long
@@ -16,7 +16,7 @@ Sub Stocks():
     tckrTypeCount = 0
     stockVol = 0
 
-
+    'For every row starting with the the second row
     For i = 2 To 760192
 
         'If current row's ticker symbol is the same as previous row's ticker symbol
@@ -36,11 +36,11 @@ Sub Stocks():
             Cells(1 + tckrTypeCount, 9).Value = Cells(i, 1).Value
 
             'dump stock volume into Total Stock Volume cell
-            Cells(1 + tckrTypeCount, 12).Value = stockVol
+             Cells(1 + tckrTypeCount, 12).Value = stockVol
 
             'reset stock volume counter before adding stock's volume again
-            stockVol = 0
-            stockVol = stockVol + Cells(i, 7).Value
+            'stockVol = 0
+            'stockVol = stockVol + Cells(i, 7).Value
 
             'collect the opening price from, current stock's initial row
             'yearOpeningPrice = Cells(i, 3).Value
@@ -61,4 +61,3 @@ Sub Stocks():
     Next i
                 
 End Sub
-
