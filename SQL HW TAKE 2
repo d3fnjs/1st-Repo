@@ -1,0 +1,125 @@
+USE sakila;
+SELECT * FROM sakila.actor;
+
+ALTER TABLE sakila.actor
+DROP COLUMN actor_full_name,
+DROP COLUMN full_name,
+DROP COLUMN Actor_Name,
+ADD COLUMN  Actor_Full_Name VARCHAR(100)  DEFAULT(CONCAT(first_name, " ", last_name)) WITH VALUES;
+
+SET SQL_SAFE_UPDATES = 0;
+
+UPDATE sakila.actor
+SET Actor_Full_Name = CONCAT(first_name, " ", last_name);
+SELECT * FROM sakila.actor;
+
+SeLECT actor_id, last_name, Actor_Name FROM actor  WHERE first_name = "Joe";
+
+SELECT * FROM sakila.actor WHERE last_name LIKE '%GEN%';
+
+SELECT * FROM sakila.actor WHERE last_name LIKE '%LI%'
+ORDER BY last_name, first_name;
+
+SELECT country_id, country FROM country WHERE country IN ("Afghanistan", "Bangladesh", "China");
+
+ALTER TABLE actor
+ADD COLUMN description BLOB(1000) DEFAULT NULL ;
+SELECT * FROM sakila.actor;  
+
+ALTER TABLE actor
+DROP COLUMN description,
+GROUP BY last_name,
+SELECT * FROM sakila.actor WHERE last_name NOT DISTINCT;                                                                                                                                                                                                                                                                                        DISTINCT;
+
+#4.a
+SELECT DISTINCT last_name, COUNT(actor_id) AS actors_with_last_name FROM actor
+GROUP BY last_name;
+
+#4.b
+SELECT DISTINCT last_name, COUNT(actor_id) AS actors_with_last_name FROM actor
+GROUP BY last_name HAVING actors_with_last_name > 1;
+
+SELECT * FROM actor
+ORDER BY last_name;
+
+
+#4.c
+UPDATE sakila.actor
+SET first_name = "HARPO",  full_name = CONCAT(first_name, " ", last_name) WHERE actor_id = 172;
+
+SELECT * FROM Actor WHERE actor_id = 172;
+
+#4.d
+UPDATE sakila.actor
+SET first_name = "GROUCHO", full_name = CONCAT(first_name, " ", last_name) WHERE actor_id = 172;
+
+SELECT * FROM Actor WHERE actor_id = 172;
+SELECT * FROM address;
+
+#5.a
+DROP TABLE IF EXISTS address;
+CREATE TABLE address(
+address_id SMALLINT(5) UNIQUE AUTO_INCREMENT,
+address VARCHAR(50),
+address2 VARCHAR(50),
+district VARCHAR(20),
+city_id SMALLINT(5) UNIQUE,
+postal_code VARCHAR(10),
+phone VARCHAR(20),
+location GEOMETRY,
+last_update TIMESTAMP NOT NULL,
+PRIMARY KEY(address_id)
+);
+SELECT * FROM address;
+SELECT * FROM staff;
+SELECT * FROM payment;
+#6.a
+SELECT staff.first_name , staff.last_name , address.address
+FROM staff
+INNER JOIN address
+ON address.address_id = staff.address_id;
+
+
+#6.b
+SELECT staff.first_name,  staff.last_name , SUM(payment.amount) AS august_2005_expenditures 
+FROM  staff 
+INNER JOIN payment 
+ON staff.staff_id = payment.staff_id WHERE payment.payment_date LIKE "%2005-08%" 
+GROUP BY staff.staff_id;
+
+#6.c
+# List each film and the number of actors who are listed for that film. Use tables `film_actor` and `film`. Use inner join
+
+SELECT * FROM film_actor; WHERE film_id NOT DISTINCT; 
+
+SELECT film_actor.actor_id, film.film_id, film.title FROM film, film_actor;
+
+#CREATE TABLE actors_in_film(actoractoractoractor_idactor_idactor_idactor_id
+SELECT distinct actor_id FROM film_actor;
+SELECT film.film, COUNT(DISTINCT actor_id) AS 
+ 
+SELECT DISTINCT actor_id FROM film_actor;
+
+SELECT DISTINCT actor_id, GROUP_CONCAT(film.title ORDER BY film_actor.film_id)  FROM film_actor
+INNER JOIN film
+ON film_actor.film_id = film.film_id
+GROUP BY actor_id;
+
+SELECT DISTINCT actor_id, GROUP_CONCAT(film_actor.film_id) FROM film_actor
+INNER JOIN film
+ON film_actor.film_id = film.film_id
+GROUP BY actor_id;
+
+SELECT DISTINCT film.film_id, film.title, GROUP_CONCAT(DISTINCT film_actor.actor_id) FROM film_actor
+INNER JOIN film
+ON film_actor.film_id = film.film_id
+GROUP BY actor_id;
+
+#6.c
+ SELECT DISTINCT film.title , COUNT(DISTINCT actor_id) AS number_of_actors FROM film_actor
+ INNER JOIN film
+ ON film.film_id = film_actor.film_id
+ GROUP BY film_actor.film_id;
+ 
+
+ 
